@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>TermoSmart – Odczyty</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Odczyty z urządzenia</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Temperatura (°C)</th>
+        <th>Wilgotność (%)</th>
+      </tr>
+    </thead>
+    <tbody id="data-table"></tbody>
+  </table>
+
+  <script>
+    const API_URL = "https://termosmart-api-akcndqc3agbuh5bf.westeurope-01.azurewebsites.net/api/data";
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        const table = document.getElementById("data-table");
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${new Date(row.timestamp).toLocaleString()}</td>
+            <td>${row.temperature.toFixed(2)}</td>
+            <td>${row.humidity.toFixed(2)}</td>
+          `;
+          table.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        console.error("Błąd pobierania danych:", err);
+      });
+  </script>
+</body>
+</html>
