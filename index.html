@@ -1,22 +1,50 @@
-<!-- frontend/index.html -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <title>Dane z API</title>
+  <title>Dane z czujnika</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
 </head>
 <body>
   <h1>Dane z czujnika</h1>
-  <pre id="output">Ładowanie danych...</pre>
+  <table>
+    <thead>
+      <tr>
+        <th>Czas</th>
+        <th>Urządzenie</th>
+        <th>Temperatura (°C)</th>
+        <th>Wilgotność (%)</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+      <tr><td colspan="4">Ładowanie danych...</td></tr>
+    </tbody>
+  </table>
 
   <script>
     fetch('https://termosmart-api-akcndqc3agbuh5bf.westeurope-01.azurewebsites.net/data')
       .then(res => res.json())
       .then(data => {
-        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = ''; // Wyczyść "Ładowanie danych..."
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${new Date(item.timestamp).toLocaleString()}</td>
+            <td>${item.device}</td>
+            <td>${item.temperature}</td>
+            <td>${item.humidity}</td>
+          `;
+          tbody.appendChild(row);
+        });
       })
       .catch(err => {
-        document.getElementById('output').textContent = 'Błąd: ' + err;
+        document.getElementById('table-body').innerHTML = `<tr><td colspan="4">Błąd: ${err}</td></tr>`;
       });
   </script>
 </body>
