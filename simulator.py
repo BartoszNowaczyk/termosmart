@@ -1,5 +1,6 @@
 import time
 import random
+import json
 from azure.iot.device import IoTHubDeviceClient, Message
 
 CONNECTION_STRING = "HostName=termosmartHub.azure-devices.net;DeviceId=device01;SharedAccessKey=SEIRhMTakvzUT8h1WCJm2JyhEvZNi+fnz2JszBykn9g="
@@ -19,7 +20,7 @@ def main():
     print("Połączono z Azure IoT Hub")
     while True:
         data = generate_data()
-        msg = Message(str(data))
+        msg = Message(json.dumps(data)) 
         client.send_message(msg)
         print("Wysłano:", data)
         time.sleep(10)
