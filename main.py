@@ -30,7 +30,7 @@ def get_data():
                     body_encoded = record.get("Body")
                     if body_encoded:
                         decoded = base64.b64decode(body_encoded).decode("utf-8")
-                        parsed = eval(decoded)  # Można zastąpić `json.loads(decoded)` jeśli zmienisz format
+                        parsed = json.loads(decoded)  # <-- bezpieczne json.loads
                         results.append({
                             "timestamp": record.get("EnqueuedTimeUtc"),
                             "device": record["SystemProperties"].get("connectionDeviceId"),
@@ -40,4 +40,3 @@ def get_data():
                 print(f"Błąd przy pliku {blob.name}: {e}")
 
     return results
-
