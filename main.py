@@ -14,7 +14,7 @@ container_name = os.getenv("AZURE_STORAGE_CONTAINER")
 
 container_client = ContainerClient.from_connection_string(connection_str, container_name)
 
-@app.get("/api/data")
+@app.get("")
 def get_data():
     results = []
 
