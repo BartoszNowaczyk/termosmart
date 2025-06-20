@@ -10,7 +10,7 @@
   <pre id="output">Ładowanie danych...</pre>
 
   <script>
-    fetch('https://TWÓJ_BACKEND.azurewebsites.net/data')
+    fetch('https://termosmart-api-akcndqc3agbuh5bf.westeurope-01.azurewebsites.net/data')
       .then(res => res.json())
       .then(data => {
         document.getElementById('output').textContent = JSON.stringify(data, null, 2);
