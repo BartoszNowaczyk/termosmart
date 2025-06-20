@@ -1,47 +1,22 @@
+<!-- frontend/index.html -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <title>TermoSmart – Odczyty</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-  </style>
+  <title>Dane z API</title>
 </head>
 <body>
-  <h1>Odczyty z urządzenia</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Data</th>
-        <th>Temperatura (°C)</th>
-        <th>Wilgotność (%)</th>
-      </tr>
-    </thead>
-    <tbody id="data-table"></tbody>
-  </table>
+  <h1>Dane z czujnika</h1>
+  <pre id="output">Ładowanie danych...</pre>
 
   <script>
-    const API_URL = "https://termosmart-api-akcndqc3agbuh5bf.westeurope-01.azurewebsites.net/api/data";
-
-    fetch(API_URL)
+    fetch('https://TWÓJ_BACKEND.azurewebsites.net/data')
       .then(res => res.json())
       .then(data => {
-        const table = document.getElementById("data-table");
-        data.forEach(row => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${new Date(row.timestamp).toLocaleString()}</td>
-            <td>${row.temperature.toFixed(2)}</td>
-            <td>${row.humidity.toFixed(2)}</td>
-          `;
-          table.appendChild(tr);
-        });
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
       })
       .catch(err => {
-        console.error("Błąd pobierania danych:", err);
+        document.getElementById('output').textContent = 'Błąd: ' + err;
       });
   </script>
 </body>
