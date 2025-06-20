@@ -14,6 +14,10 @@ container_name = os.getenv("AZURE_STORAGE_CONTAINER")
 
 container_client = ContainerClient.from_connection_string(connection_str, container_name)
 
+@app.get("/")
+def root():
+    return {"message": "Hello from termosmart API"}
+
 @app.get("/api/data")
 def get_data():
     results = []
@@ -30,7 +34,7 @@ def get_data():
                     body_encoded = record.get("Body")
                     if body_encoded:
                         decoded = base64.b64decode(body_encoded).decode("utf-8")
-                        parsed = json.loads(decoded)  # <-- bezpieczne json.loads
+                        parsed = eval(decoded)  # lub json.loads(decoded) - w zależności od formatu
                         results.append({
                             "timestamp": record.get("EnqueuedTimeUtc"),
                             "device": record["SystemProperties"].get("connectionDeviceId"),
