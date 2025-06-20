@@ -1,6 +1,0 @@
-fastapi
-requests
-uvicorn
-gunicorn
-azure-storage-blob
-python-dotenv
